@@ -48,7 +48,34 @@ resource "aws_security_group" "eks-cluster" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
 
+# Create VPC and subnet
+resource "aws_vpc" "main" {
+  cidr_block       = "10.0.0.0/24"
+  instance_tenancy = "default"
+
+  tags = {
+    Name = "VPC"
+  }
+}
+
+resource "aws_subnet" "master" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.0.8/32"
+
+  tags = {
+    Name = "VPC"
+  }
+}
+
+resource "aws_subnet" "slaves" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.0.0/29"
+
+  tags = {
+    Name = "VPC"
+  }
 }
 
 # Creating the EKS cluster
@@ -62,7 +89,7 @@ resource "aws_eks_cluster" "eks_cluster" {
 
   vpc_config {             # Configure EKS with vpc and network settings 
    security_group_ids = ["${aws_security_group.eks-cluster.id}"]
-   subnet_ids         = ["subnet-0559463000fecc8ce","subnet-090782251b6787b5a"] 
+   subnet_ids         = ["${aws.master.id}","${aws.slaves.id}"] 
     }
 
   depends_on = [
@@ -71,8 +98,6 @@ resource "aws_eks_cluster" "eks_cluster" {
 }
 
 # Creating IAM role for EKS nodes to work with other AWS Services. 
-
-
 resource "aws_iam_role" "eks_nodes" {
   name = "eks-node-group"
 
@@ -115,7 +140,7 @@ resource "aws_eks_node_group" "node" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = "node_group1"
   node_role_arn   = aws_iam_role.eks_nodes.arn
-  subnet_ids      = ["subnet-0559463000fecc","subnet-090782251b6787b5a"]
+  subnet_ids      = ["${aws.master.id}","${aws.slaves.id}"] 
 
   scaling_config {
     desired_size = 1
