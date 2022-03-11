@@ -27,7 +27,7 @@ stage('terraform apply'){
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
    ]]) {
-        bat "terraform apply -auto-approve"
+        bat "terraform destroy"
       }
    }
     }
