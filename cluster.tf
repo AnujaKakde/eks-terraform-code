@@ -30,7 +30,7 @@ resource "aws_iam_role_policy_attachment" "eks-cluster-AmazonEKSClusterPolicy" {
 
 resource "aws_security_group" "eks-cluster" {
   name        = "SG-eks-cluster"
-  vpc_id      = "vpc-05c9666011d7e784b"  
+  vpc_id      = "vpc-07ba1eff7fad28dba"  
 
 # Egress allows Outbound traffic from the EKS cluster to the  Internet 
 
