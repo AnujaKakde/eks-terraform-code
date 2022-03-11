@@ -50,33 +50,7 @@ resource "aws_security_group" "eks-cluster" {
   }
 }
 
-# Create VPC and subnet
-resource "aws_vpc" "main" {
-  cidr_block       = "10.0.0.0/24"
-  instance_tenancy = "default"
 
-  tags = {
-    Name = "VPC"
-  }
-}
-
-resource "aws_subnet" "master" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.0.8/32"
-
-  tags = {
-    Name = "VPC"
-  }
-}
-
-resource "aws_subnet" "slaves" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.0.0/29"
-
-  tags = {
-    Name = "VPC"
-  }
-}
 
 # Creating the EKS cluster
 
@@ -89,7 +63,7 @@ resource "aws_eks_cluster" "eks_cluster" {
 
   vpc_config {             # Configure EKS with vpc and network settings 
    security_group_ids = ["${aws_security_group.eks-cluster.id}"]
-   subnet_ids         = ["${aws_subnet.master.id}","${aws_subnet.slaves.id}"] 
+   subnet_ids         = ["subnet-050791b4d1c461ccb","subnet-0b8a93cc690fc345e"] 
     }
 
   depends_on = [
@@ -140,7 +114,7 @@ resource "aws_eks_node_group" "node" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = "node_group1"
   node_role_arn   = aws_iam_role.eks_nodes.arn
-  subnet_ids      = ["${aws_subnet.master.id}","${aws_subnet.slaves.id}"] 
+  subnet_ids      = ["subnet-050791b4d1c461ccb","subnet-0b8a93cc690fc345e"] 
 
   scaling_config {
     desired_size = 1
