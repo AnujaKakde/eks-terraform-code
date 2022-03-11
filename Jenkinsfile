@@ -36,7 +36,7 @@ stage('terraform apply'){
     \$Env:TF_LOG = "DEBUG"
      terraform get -update -no-color
      terraform validate -no-color
-     terraform destroy -auto-approve
+     terraform ${tfcommand} -auto-approve
      """)  
       }
    }
