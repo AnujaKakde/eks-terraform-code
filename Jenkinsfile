@@ -26,14 +26,11 @@ stage('terraform apply'){
     credentialsId: "AWS_ROOT_KEY",
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-   ]]) {
-      
-     def stdout = powershell(returnStdout: true, script: '''
-        $Env:TF_LOG = "TRACE"
-        terraform plan
-        ''')
-    println stdout
-        
+   ]]) { 
+     powershell ("""
+    \$Env:TF_LOG = "TRACE"
+     terraform plan
+""")    
       }
    }
     }
