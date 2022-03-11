@@ -12,8 +12,7 @@ pipeline{
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
    ]]) {
-   
-        sh "terraform init"
+        bat "terraform init"
     }
    }
       
@@ -28,7 +27,7 @@ stage('terraform apply'){
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
    ]]) {
-        sh "terraform apply -auto-approve"
+        bat "terraform apply -auto-approve"
       }
    }
     }
