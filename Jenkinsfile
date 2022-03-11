@@ -8,7 +8,7 @@ pipeline{
     steps{
     withCredentials([[
     $class: 'AmazonWebServicesCredentialsBinding',
-    credentialsId: "credentials-id-here",
+    credentialsId: "AWS_ROOT_KEY",
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
    ]]) {
@@ -24,7 +24,7 @@ stage('terraform apply'){
   steps{
     withCredentials([[
     $class: 'AmazonWebServicesCredentialsBinding',
-    credentialsId: "credentials-id-here",
+    credentialsId: "AWS_ROOT_KEY",
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
    ]]) {
