@@ -89,7 +89,7 @@ resource "aws_eks_cluster" "eks_cluster" {
 
   vpc_config {             # Configure EKS with vpc and network settings 
    security_group_ids = ["${aws_security_group.eks-cluster.id}"]
-   subnet_ids         = ["${aws.master.id}","${aws.slaves.id}"] 
+   subnet_ids         = ["${aws_subnet.master.id}","${aws_subnet.slaves.id}"] 
     }
 
   depends_on = [
@@ -140,7 +140,7 @@ resource "aws_eks_node_group" "node" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = "node_group1"
   node_role_arn   = aws_iam_role.eks_nodes.arn
-  subnet_ids      = ["${aws.master.id}","${aws.slaves.id}"] 
+  subnet_ids      = ["${aws_subnet.master.id}","${aws_subnet.slaves.id}"] 
 
   scaling_config {
     desired_size = 1
