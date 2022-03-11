@@ -28,9 +28,16 @@ stage('terraform apply'){
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
    ]]) { 
      powershell ("""
-    \$Env:TF_LOG = "TRACE"
+    \$Env:TF_LOG = "DEBUG"
      terraform plan
 """)    
+    input message: 'Proceed with Terraform Apply or Abort?'
+    powershell ("""
+    \$Env:TF_LOG = "DEBUG"
+     terraform get -update -no-color
+     terraform validate -no-color
+     terraform apply -auto-approve
+     """)  
       }
    }
     }
